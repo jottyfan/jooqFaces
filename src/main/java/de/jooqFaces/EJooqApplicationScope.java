@@ -6,7 +6,11 @@ package de.jooqFaces;
  *
  */
 public enum EJooqApplicationScope {
-	JOOQ_FACES_URL("jooqFacesConnection"), JOOQ_FACES_DRIVER("jooqFacesDriver"), JOOQ_FACES_DSLCONTEXT("jooqFacesConnection"), JOOQ_FACES_SQLDIALECT("jooqFacesSqldialect");
+	JOOQ_FACES_URL("jooqFacesUrl"), //
+	JOOQ_FACES_DRIVER("jooqFacesDriver"), //
+	JOOQ_FACES_DSLCONTEXT("jooqFacesConnection"), //
+	JOOQ_FACES_SQLDIALECT("jooqFacesSqldialect"), //
+	JOOQ_FACES_PROPERTIES("jooqFacesProperties");
 
 	private final String s;
 
