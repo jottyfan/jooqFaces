@@ -42,13 +42,13 @@ public class JooqFacesRestoreViewPhaseListener implements PhaseListener {
 	}
 
 	/**
-	 * get jooq sql dialect from initial context
+	 * find jooq sql dialect class for dialectName
 	 * 
-	 * @param servletContext
-	 * @return
+	 * @param dialectName
+	 *          name of dialect, equals to the enum name
+	 * @return SQLDialect if found, null otherwise
 	 */
-	public SQLDialect getSqlDialect(ServletContext servletContext) {
-		String dialectName = (String) servletContext.getInitParameter(EJooqApplicationScope.JOOQ_FACES_SQLDIALECT.get());
+	public static final SQLDialect findDialect(String dialectName) {
 		if ("CUBRID".equalsIgnoreCase(dialectName)) {
 			return SQLDialect.CUBRID;
 		} else if ("DEFAULT".equalsIgnoreCase(dialectName)) {
@@ -84,6 +84,17 @@ public class JooqFacesRestoreViewPhaseListener implements PhaseListener {
 		} else {
 			return null;
 		}
+	}
+
+	/**
+	 * get jooq sql dialect from initial context
+	 * 
+	 * @param servletContext
+	 * @return
+	 */
+	public SQLDialect getSqlDialect(ServletContext servletContext) {
+		String dialectName = (String) servletContext.getInitParameter(EJooqApplicationScope.JOOQ_FACES_SQLDIALECT.get());
+		return findDialect(dialectName);
 	}
 
 	/**
