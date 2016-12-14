@@ -28,6 +28,7 @@ public class PropertiesDeploymentListener implements ServletContextListener {
 	public void contextInitialized(ServletContextEvent event) {
 		try {
 			ServletContext ctx = event.getServletContext();
+			beforeInitialization(ctx);
 			String propertiesFileName = (String) ctx.getInitParameter(EJooqApplicationScope.JOOQ_FACES_PROPERTIES.get());
 			if (propertiesFileName == null) {
 				throw new IOException(
@@ -36,17 +37,47 @@ public class PropertiesDeploymentListener implements ServletContextListener {
 			}
 			Properties properties = new Properties();
 			properties.load(new FileInputStream(propertiesFileName));
-			ctx.setInitParameter(EJooqApplicationScope.JOOQ_FACES_SQLDIALECT.get(),
-					properties.getProperty(EJooqApplicationScope.JOOQ_FACES_SQLDIALECT.get()));
-			ctx.setInitParameter(EJooqApplicationScope.JOOQ_FACES_URL.get(),
-					properties.getProperty(EJooqApplicationScope.JOOQ_FACES_URL.get()));
-			ctx.setInitParameter(EJooqApplicationScope.JOOQ_FACES_DRIVER.get(),
-					properties.getProperty(EJooqApplicationScope.JOOQ_FACES_DRIVER.get()));
-			// for security reasons, remove the url
-			properties.remove(EJooqApplicationScope.JOOQ_FACES_URL.get());
-			ctx.setInitParameter(EJooqApplicationScope.JOOQ_FACES_PROPERTIES.get(), properties.toString());
+			for (Map.Entry<Object, Object> entry : properties.entrySet()) {
+				String key = (String) entry.getKey();
+				String value = (String) entry.getValue();
+				ctx.setInitParameter(key, value);
+			}
+			// ensure to have all needed parameters loaded
+			if (ctx.getInitParameter(EJooqApplicationScope.JOOQ_FACES_SQLDIALECT.get()) == null) {
+				throw new IOException("no " + EJooqApplicationScope.JOOQ_FACES_SQLDIALECT.get()
+						+ " defined in your properties file " + propertiesFileName);
+			}
+			if (ctx.getInitParameter(EJooqApplicationScope.JOOQ_FACES_URL.get()) == null) {
+				throw new IOException("no " + EJooqApplicationScope.JOOQ_FACES_URL.get() + " defined in your properties file "
+						+ propertiesFileName);
+			}
+			if (ctx.getInitParameter(EJooqApplicationScope.JOOQ_FACES_DRIVER.get()) == null) {
+				throw new IOException("no " + EJooqApplicationScope.JOOQ_FACES_DRIVER.get()
+						+ " defined in your properties file " + propertiesFileName);
+			}
+			afterInitialization(ctx);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * executed directly after initialization if no exception is thrown
+	 * 
+	 * @param ctx
+	 *          the context to use
+	 */
+	public void afterInitialization(ServletContext ctx) {
+		// to be implemented in extending classes
+	}
+
+	/**
+	 * executed directly before initialization after getting the context from the servlet
+	 * 
+	 * @param ctx
+	 *          the context to use
+	 */
+	public void beforeInitialization(ServletContext ctx) {
+		// to be implemented in extending classes
 	}
 }

@@ -31,6 +31,7 @@ In your web.xml, register the database driver for example on a postgresql databa
 	<param-value>POSTGRES_9_5</param-value>
 </context-param>
 ````
+# alternative
 If you want to use a properties file instead, you might ignore the context params jooqFacesDriver, jooqFacesUrl and jooqFacesSqldialect in your web.xml and replace them by the context param jooqFacesProperties that contains the full url to the properties file that contains these parameters:
 
 ````xml
@@ -51,10 +52,5 @@ jooqFacesDriver = org.postgresql.Driver
 jooqFacesUrl = jdbc:postgresql://myhost:myport/mydatabase?user=myuser&password=mypassword&ssl=true
 jooqFacesSqldialect = POSTGRES_9_5
 ````
-Then, you also have to use JooqFacesPropertiesRestoreViewPhaseListener instead of JooqFacesRestoreViewPhaseListener in your faces-config.xml:
-````xml
-<phase-listener>de.jooqFaces.JooqFacesPropertiesRestoreViewPhaseListener</phase-listener>
-````
-# extensions
+All other key value pairs are added to the application context as well. If you want to remove them after loading, extend PropertiesDeploymentListener and overwrite the method afterInitialization.
 
-If you want to omit telling your password to web.xml, you could also extend from JooqFacesRestoreViewPhaseListener and write your own one, let's call it MyJooqFacesRestoreViewPhaseListener. Then, you might overwrite the method getUrl to set up your own url string on any other way you want. Of course, you have to register your MyJooqFacesRestoreViewPhaseListener instead of the JooqFacesRestoreViewPhaseListener in faces-config.xml's lifecycle tag.
