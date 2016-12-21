@@ -7,7 +7,8 @@ The idea is to open a database connection in the jsf restore view phase and keep
 # usage
 If configured, you can access the jooq context using this code snipplet:
 ````java
-DSLContext jooqContext = (DSLContext) facesContext.getExternalContext().getApplicationMap().get(EJooqApplicationScope.JOOQ_FACES_DSLCONTEXT.get());
+DSLContext jooqContext = (DSLContext) facesContext.getExternalContext()
+.getApplicationMap().get(EJooqApplicationScope.JOOQ_FACES_DSLCONTEXT.get());
 ````
 
 # configuration
