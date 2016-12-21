@@ -5,6 +5,12 @@ combining jooq usage and java server faces
 The idea is to open a database connection in the jsf restore view phase and keep it open until the render response phase is executed.
 
 # usage
+If configured, you can access the jooq context using this code snipplet:
+````java
+DSLContext jooqContext = (DSLContext) facesContext.getExternalContext().getApplicationMap().get(EJooqApplicationScope.JOOQ_FACES_DSLCONTEXT.get());
+````
+
+# configuration
 Register the phase listeners in your faces-config.xml file by adding these two tags to your lifecycle tag:
 
 ````xml
