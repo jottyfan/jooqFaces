@@ -18,9 +18,6 @@ Register the phase listeners in your faces-config.xml file by adding these two t
 <phase-listener>de.jooqFaces.JooqFacesRenderResponsePhaseListener</phase-listener>
 <phase-listener>de.jooqFaces.JooqFacesRestoreViewPhaseListener</phase-listener>
 ````
-
-You can access the jooq relevant datasource by getting the application map's entry with key jooqConnection.
-
 In your web.xml, register the database driver for example on a postgresql database and your connection information (replace your connection data):
 
 ````xml
