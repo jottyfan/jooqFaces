@@ -67,7 +67,7 @@ public class PropertiesDeploymentListener implements ServletContextListener {
 	 * @param ctx
 	 *          the context to use
 	 */
-	public void afterInitialization(ServletContext ctx) {
+	public void afterInitialization(ServletContext ctx) throws IOException {
 		// to be implemented in extending classes
 	}
 
@@ -77,7 +77,7 @@ public class PropertiesDeploymentListener implements ServletContextListener {
 	 * @param ctx
 	 *          the context to use
 	 */
-	public void beforeInitialization(ServletContext ctx) {
+	public void beforeInitialization(ServletContext ctx) throws IOException {
 		// to be implemented in extending classes
 	}
 }
