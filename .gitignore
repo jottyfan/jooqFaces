@@ -9,3 +9,6 @@ buildNumber.properties
 .mvn/timing.properties
 /bin/
 /.gradle/
+/gradle/
+/gradlew
+/gradlew.bat
