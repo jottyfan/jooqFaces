@@ -15,6 +15,9 @@ import org.mockito.*;
  */
 public class TestJooqFacesRestoreViewPhaseListener {
 
+	/**
+	 * test the before phase
+	 */
 	@Test
 	public void testBeforePhase() {
 		// TODO: setup using a database that can be configured in junit only
@@ -39,6 +42,9 @@ public class TestJooqFacesRestoreViewPhaseListener {
 		// assertNotNull(applicationMap.get(EJooqApplicationScope.JOOQ_FACES_DSLCONTEXT));
 	}
 
+	/**
+	 * test the get driver method
+	 */
 	@Test
 	public void testGetDriver() {
 		ServletContext servletContext = Mockito.mock(ServletContext.class);
@@ -46,6 +52,9 @@ public class TestJooqFacesRestoreViewPhaseListener {
 		assertEquals("myDriver", new JooqFacesRestoreViewPhaseListener().getDriver(servletContext));
 	}
 
+	/**
+	 * test the get url method
+	 */
 	@Test
 	public void testGetUrl() {
 		ServletContext servletContext = Mockito.mock(ServletContext.class);
@@ -53,11 +62,15 @@ public class TestJooqFacesRestoreViewPhaseListener {
 		assertEquals("myUrl", new JooqFacesRestoreViewPhaseListener().getUrl(servletContext));
 	}
 
+	/**
+	 * test the get sql dialect method
+	 */
 	@Test
 	public void testGetSqlDialect() {
 		ServletContext servletContext = Mockito.mock(ServletContext.class);
 		assertNull(new JooqFacesRestoreViewPhaseListener().getSqlDialect(servletContext));
-		Mockito.when(servletContext.getInitParameter(EJooqApplicationScope.JOOQ_FACES_SQLDIALECT.get())).thenReturn("POSTGRES_9_5");
+		Mockito.when(servletContext.getInitParameter(EJooqApplicationScope.JOOQ_FACES_SQLDIALECT.get()))
+				.thenReturn("POSTGRES_9_5");
 		assertEquals(SQLDialect.POSTGRES_9_5, new JooqFacesRestoreViewPhaseListener().getSqlDialect(servletContext));
 	}
 }

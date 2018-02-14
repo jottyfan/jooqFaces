@@ -25,6 +25,9 @@ public abstract class MockFacesContext extends FacesContext {
 		}
 	}
 
+	/**
+	 * @return create a faces context mock
+	 */
 	public static FacesContext create() {
 		FacesContext context = Mockito.mock(FacesContext.class);
 		setCurrentInstance(context);

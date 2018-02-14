@@ -6,10 +6,25 @@ package de.jooqFaces;
  *
  */
 public enum EJooqApplicationScope {
-	JOOQ_FACES_URL("jooqFacesUrl"), //
-	JOOQ_FACES_DRIVER("jooqFacesDriver"), //
-	JOOQ_FACES_DSLCONTEXT("jooqFacesConnection"), //
-	JOOQ_FACES_SQLDIALECT("jooqFacesSqldialect"), //
+	/**
+	 * jooqFacesUrl
+	 */
+	JOOQ_FACES_URL("jooqFacesUrl"),
+	/**
+	 * jooqFacesDriver
+	 */
+	JOOQ_FACES_DRIVER("jooqFacesDriver"),
+	/**
+	 * jooqFacesConnection
+	 */
+	JOOQ_FACES_DSLCONTEXT("jooqFacesConnection"),
+	/**
+	 * jooqFacesSqldialect
+	 */
+	JOOQ_FACES_SQLDIALECT("jooqFacesSqldialect"),
+	/**
+	 * jooqFacesProperties
+	 */
 	JOOQ_FACES_PROPERTIES("jooqFacesProperties");
 
 	private final String s;
@@ -18,6 +33,9 @@ public enum EJooqApplicationScope {
 		this.s = s;
 	}
 
+	/**
+	 * @return the value
+	 */
 	public final String get() {
 		return s;
 	}

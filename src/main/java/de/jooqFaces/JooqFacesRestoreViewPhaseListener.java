@@ -25,7 +25,8 @@ public class JooqFacesRestoreViewPhaseListener implements PhaseListener {
 	 * get driver from initial context
 	 * 
 	 * @param servletContext
-	 * @return
+	 *          the context of this function call
+	 * @return the parameter value of the jooq faces driver
 	 */
 	public String getDriver(ServletContext servletContext) {
 		return (String) servletContext.getInitParameter(EJooqApplicationScope.JOOQ_FACES_DRIVER.get());
@@ -35,7 +36,8 @@ public class JooqFacesRestoreViewPhaseListener implements PhaseListener {
 	 * get driver connection url from initial context
 	 * 
 	 * @param servletContext
-	 * @return
+	 *          the context of this function call
+	 * @return the parameter value of the jooq faces url
 	 */
 	public String getUrl(ServletContext servletContext) {
 		return (String) servletContext.getInitParameter(EJooqApplicationScope.JOOQ_FACES_URL.get());
@@ -45,43 +47,18 @@ public class JooqFacesRestoreViewPhaseListener implements PhaseListener {
 	 * find jooq sql dialect class for dialectName
 	 * 
 	 * @param dialectName
-	 *          name of dialect, equals to the enum name
+	 *          name of dialect
 	 * @return SQLDialect if found, null otherwise
 	 */
 	public static final SQLDialect findDialect(String dialectName) {
-		if ("CUBRID".equalsIgnoreCase(dialectName)) {
-			return SQLDialect.CUBRID;
-		} else if ("DEFAULT".equalsIgnoreCase(dialectName)) {
-			return SQLDialect.DEFAULT;
-		} else if ("DERBY".equalsIgnoreCase(dialectName)) {
-			return SQLDialect.DERBY;
-		} else if ("FIREBIRD".equalsIgnoreCase(dialectName)) {
-			return SQLDialect.FIREBIRD;
-		} else if ("FIREBIRD_2_5".equalsIgnoreCase(dialectName)) {
-			return SQLDialect.FIREBIRD_2_5;
-		} else if ("FIREBIRD_3_0".equalsIgnoreCase(dialectName)) {
-			return SQLDialect.FIREBIRD_3_0;
-		} else if ("H2".equalsIgnoreCase(dialectName)) {
-			return SQLDialect.H2;
-		} else if ("HSQLDB".equalsIgnoreCase(dialectName)) {
-			return SQLDialect.HSQLDB;
-		} else if ("MARIADB".equalsIgnoreCase(dialectName)) {
-			return SQLDialect.MARIADB;
-		} else if ("MYSQL".equalsIgnoreCase(dialectName)) {
-			return SQLDialect.MYSQL;
-		} else if ("POSTGRES".equalsIgnoreCase(dialectName)) {
-			return SQLDialect.POSTGRES;
-		} else if ("POSTGRES_9_3".equalsIgnoreCase(dialectName)) {
-			return SQLDialect.POSTGRES_9_3;
-		} else if ("POSTGRES_9_4".equalsIgnoreCase(dialectName)) {
-			return SQLDialect.POSTGRES_9_4;
-		} else if ("POSTGRES_9_5".equalsIgnoreCase(dialectName)) {
-			return SQLDialect.POSTGRES_9_5;
-		} else if ("SQL99".equalsIgnoreCase(dialectName)) {
-			return SQLDialect.SQL99;
-		} else if ("SQLITE".equalsIgnoreCase(dialectName)) {
-			return SQLDialect.SQLITE;
+		if (dialectName == null) {
+			return null;
 		} else {
+			for (SQLDialect dialect : SQLDialect.values()) {
+				if (dialectName.equalsIgnoreCase(dialect.getName())) {
+					return dialect;
+				}
+			}
 			return null;
 		}
 	}
@@ -90,7 +67,8 @@ public class JooqFacesRestoreViewPhaseListener implements PhaseListener {
 	 * get jooq sql dialect from initial context
 	 * 
 	 * @param servletContext
-	 * @return
+	 *          the context of this function call
+	 * @return the dialect or null
 	 */
 	public SQLDialect getSqlDialect(ServletContext servletContext) {
 		String dialectName = (String) servletContext.getInitParameter(EJooqApplicationScope.JOOQ_FACES_SQLDIALECT.get());
