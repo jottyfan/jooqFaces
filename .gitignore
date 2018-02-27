@@ -12,3 +12,4 @@ buildNumber.properties
 /gradle/
 /gradlew
 /gradlew.bat
+/build/
