@@ -58,3 +58,11 @@ jooqFacesSqldialect = POSTGRES_9_5
 ````
 All other key value pairs are added to the application context as well. If you want to remove them after loading, extend PropertiesDeploymentListener and overwrite the method afterInitialization.
 
+# extension
+If you want to make sure that all database connections are closed on render response phase, you can use the `JooqFacesContext` instead of the original `FacesContext`. Doing so, you must register the `JooqFacesContextFactory` as the standard faces context factory in `faces-config.xml` by adding this lines:
+````xml
+<factory>
+  <faces-context-factory>de.jooqFaces.JooqFacesContextFactory</faces-context-factory>
+</factory>
+````
+
