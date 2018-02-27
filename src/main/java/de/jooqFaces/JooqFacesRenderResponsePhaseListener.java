@@ -23,6 +23,7 @@ public class JooqFacesRenderResponsePhaseListener implements PhaseListener {
 		try {
 			Map<String, Object> applMap = FacesContext.getCurrentInstance().getExternalContext().getApplicationMap();
 			DSLContext dslContext = (DSLContext) applMap.get(EJooqApplicationScope.JOOQ_FACES_DSLCONTEXT.get());
+			dslContext.configuration().connectionProvider().acquire().close();
 			dslContext.close();
 		} catch (DataAccessException e) {
 			e.printStackTrace();
