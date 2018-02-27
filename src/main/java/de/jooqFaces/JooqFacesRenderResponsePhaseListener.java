@@ -1,5 +1,6 @@
 package de.jooqFaces;
 
+import java.sql.*;
 import java.util.*;
 
 import javax.faces.context.*;
@@ -26,6 +27,8 @@ public class JooqFacesRenderResponsePhaseListener implements PhaseListener {
 			dslContext.configuration().connectionProvider().acquire().close();
 			dslContext.close();
 		} catch (DataAccessException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
