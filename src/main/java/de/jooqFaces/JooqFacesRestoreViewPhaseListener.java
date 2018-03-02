@@ -55,7 +55,7 @@ public class JooqFacesRestoreViewPhaseListener implements PhaseListener {
 			return null;
 		} else {
 			for (SQLDialect dialect : SQLDialect.values()) {
-				if (dialectName.equalsIgnoreCase(dialect.getName())) {
+				if (dialectName.equalsIgnoreCase(dialect.name())) {
 					return dialect;
 				}
 			}
