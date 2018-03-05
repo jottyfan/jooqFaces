@@ -73,28 +73,7 @@ public class JooqFacesContext extends FacesContext {
 
 	@Override
 	public boolean getResponseComplete() {
-		try {
-			ExternalContext externalContext = facesContext.getExternalContext();
-			if (externalContext == null) {
-				throw new JooqFacesException("external context of current faces context is null");
-			}
-			Map<String, Object> applicationMap = externalContext.getApplicationMap();
-			if (applicationMap == null) {
-				throw new JooqFacesException("application map of current faces context is null");
-			}
-			DSLContext dslContext = (DSLContext) applicationMap.get(EJooqApplicationScope.JOOQ_FACES_DSLCONTEXT.get());
-			if (dslContext == null) {
-				throw new JooqFacesException("no dsl context found in application map");
-			}
-			dslContext.configuration().connectionProvider().acquire().close();
-			dslContext.close();
-		} catch (DataAccessException e) {
-			e.printStackTrace();
-		} catch (JooqFacesException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		
 		return facesContext.getResponseComplete();
 	}
 
@@ -125,6 +104,28 @@ public class JooqFacesContext extends FacesContext {
 
 	@Override
 	public void responseComplete() {
+		try {
+			ExternalContext externalContext = facesContext.getExternalContext();
+			if (externalContext == null) {
+				throw new JooqFacesException("external context of current faces context is null");
+			}
+			Map<String, Object> applicationMap = externalContext.getApplicationMap();
+			if (applicationMap == null) {
+				throw new JooqFacesException("application map of current faces context is null");
+			}
+			DSLContext dslContext = (DSLContext) applicationMap.get(EJooqApplicationScope.JOOQ_FACES_DSLCONTEXT.get());
+			if (dslContext == null) {
+				throw new JooqFacesException("no dsl context found in application map");
+			}
+			dslContext.configuration().connectionProvider().acquire().close();
+			dslContext.close();
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		} catch (JooqFacesException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		facesContext.responseComplete();
 	}
 
