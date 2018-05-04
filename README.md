@@ -4,6 +4,44 @@ combining jooq usage and java server faces
 # concept
 The idea is to open a database connection in the jsf restore view phase and keep it open until the render response phase is executed.
 
+# install
+You can install the jar directly on loading it from the releases tab. But there is a repository that can be bound to maven or gradle.
+
+## maven
+Add this repository to your pom.xml under the project tag:
+````xml
+	<repositories>
+		<repository>
+			<id>jooqfaces</id>
+			<name>jooqfaces repository</name>
+			<url>http://jottyfan.de/mvnrepo</url>
+		</repository>
+	</repositories>
+````
+Then you can add a dependency on the dependencies tag:
+````
+		<dependency>
+			<groupId>de.jooqFaces</groupId>
+			<artifactId>jooqFaces</artifactId>
+			<version>0.0.6-SNAPSHOT</version>
+		</dependency>
+````
+## gradle
+Just add the repository:
+````java
+repositories {
+    maven {
+        url "http://jottyfan.de/mvnrepo"
+    }
+}
+````
+Then you can add a depencency:
+````
+dependencies {
+    compile group: 'de.jooqFaces', name: 'jooqFaces', version: '0.0.6-SNAPSHOT'
+}
+````
+
 # usage
 If configured, you can access the jooq context using this code snipplet:
 ````java
