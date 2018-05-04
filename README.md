@@ -19,7 +19,7 @@ Add this repository to your pom.xml under the project tag:
 	</repositories>
 ````
 Then you can add a dependency on the dependencies tag:
-````
+````xml
 		<dependency>
 			<groupId>de.jooqFaces</groupId>
 			<artifactId>jooqFaces</artifactId>
@@ -36,7 +36,7 @@ repositories {
 }
 ````
 Then you can add a depencency:
-````
+````java
 dependencies {
     compile group: 'de.jooqFaces', name: 'jooqFaces', version: '0.0.6-SNAPSHOT'
 }
