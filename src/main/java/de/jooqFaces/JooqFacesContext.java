@@ -9,6 +9,7 @@ import javax.faces.component.*;
 import javax.faces.context.*;
 import javax.faces.render.*;
 
+import org.apache.logging.log4j.*;
 import org.jooq.*;
 import org.jooq.exception.*;
 
@@ -18,7 +19,7 @@ import org.jooq.exception.*;
  *
  */
 public class JooqFacesContext extends FacesContext {
-
+	private static final Logger LOGGER = LogManager.getLogger(JooqFacesContext.class);
 	private FacesContext facesContext;
 
 	public JooqFacesContext(FacesContext facesContext) {
@@ -104,6 +105,18 @@ public class JooqFacesContext extends FacesContext {
 
 	@Override
 	public void responseComplete() {
+		
+		/*
+		 * TODO: Apparently this method is called twice when using faces-redirect. 
+		 * Should we ignore this? 
+		 * Should the render response and response complete methods remove the context from the faces map?
+		 * 
+		 * 	2018-05-10 19:06:57.555 [http-nio-8080-exec-29] [de.jooqFaces.JooqFacesRestoreViewPhaseListener:findDialect] [DEBUG] Sql dialect found: dialectName=POSTGRES_9_5, foundDialect=POSTGRES_9_5
+		 *	2018-05-10 19:06:57.563 [http-nio-8080-exec-29] [de.jooqFaces.JooqFacesRestoreViewPhaseListener:beforePhase] [DEBUG] Created new jooq connection and put into facescontext
+		 *	2018-05-10 19:06:57.580 [http-nio-8080-exec-29] [de.jooqFaces.JooqFacesContext:responseComplete] [DEBUG] Closed jooq connection in response complete
+		 *	2018-05-10 19:06:57.580 [http-nio-8080-exec-29] [de.jooqFaces.JooqFacesContext:responseComplete] [DEBUG] Closed jooq connection in response complete
+		 */
+		
 		try {
 			ExternalContext externalContext = facesContext.getExternalContext();
 			if (externalContext == null) {
@@ -119,12 +132,9 @@ public class JooqFacesContext extends FacesContext {
 			}
 			dslContext.configuration().connectionProvider().acquire().close();
 			dslContext.close();
-		} catch (DataAccessException e) {
-			e.printStackTrace();
-		} catch (JooqFacesException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
+			LOGGER.debug("Closed jooq connection in response complete");
+		} catch (DataAccessException | SQLException | JooqFacesException e) {
+			LOGGER.error("Error closing jooq connection in response complete", e);
 		}
 		facesContext.responseComplete();
 	}
