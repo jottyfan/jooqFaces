@@ -9,6 +9,7 @@ import javax.faces.component.*;
 import javax.faces.context.*;
 import javax.faces.render.*;
 
+import org.apache.logging.log4j.*;
 import org.jooq.*;
 import org.jooq.exception.*;
 
@@ -18,7 +19,7 @@ import org.jooq.exception.*;
  *
  */
 public class JooqFacesContext extends FacesContext {
-
+	private static final Logger LOGGER = LogManager.getLogger(JooqFacesContext.class);
 	private FacesContext facesContext;
 
 	public JooqFacesContext(FacesContext facesContext) {
@@ -73,7 +74,7 @@ public class JooqFacesContext extends FacesContext {
 
 	@Override
 	public boolean getResponseComplete() {
-		
+
 		return facesContext.getResponseComplete();
 	}
 
@@ -104,6 +105,7 @@ public class JooqFacesContext extends FacesContext {
 
 	@Override
 	public void responseComplete() {
+
 		try {
 			ExternalContext externalContext = facesContext.getExternalContext();
 			if (externalContext == null) {
@@ -119,12 +121,9 @@ public class JooqFacesContext extends FacesContext {
 			}
 			dslContext.configuration().connectionProvider().acquire().close();
 			dslContext.close();
-		} catch (DataAccessException e) {
-			e.printStackTrace();
-		} catch (JooqFacesException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
+			LOGGER.debug("Closed jooq connection in response complete");
+		} catch (DataAccessException | SQLException | JooqFacesException e) {
+			LOGGER.error("Error closing jooq connection in response complete", e);
 		}
 		facesContext.responseComplete();
 	}

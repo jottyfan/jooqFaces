@@ -2,9 +2,9 @@ package de.jooqFaces;
 
 import java.io.*;
 import java.sql.*;
-import java.util.*;
+import java.util.*;import javax.servlet.*;
 
-import javax.servlet.*;
+import org.apache.logging.log4j.*;
 
 /**
  * 
@@ -12,6 +12,9 @@ import javax.servlet.*;
  *
  */
 public class PropertiesDeploymentListener implements ServletContextListener {
+	
+	private static final Logger LOGGER = LogManager.getLogger(PropertiesDeploymentListener.class);
+	
 	@Override
 	public void contextDestroyed(ServletContextEvent event) {
 		try {
@@ -19,8 +22,8 @@ public class PropertiesDeploymentListener implements ServletContextListener {
 			while (drivers.hasMoreElements()) {
 				DriverManager.deregisterDriver(drivers.nextElement());
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (SQLException | SecurityException e) {
+			LOGGER.error("Error deregistering drivers", e);
 		}
 	}
 
@@ -57,7 +60,7 @@ public class PropertiesDeploymentListener implements ServletContextListener {
 			}
 			afterInitialization(ctx);
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOGGER.error("Error loading needed parameters from properties file", e);
 		}
 	}
 

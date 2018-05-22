@@ -7,6 +7,7 @@ import javax.faces.context.*;
 import javax.faces.event.*;
 import javax.servlet.*;
 
+import org.apache.logging.log4j.*;
 import org.jooq.*;
 import org.jooq.impl.*;
 
@@ -16,8 +17,9 @@ import org.jooq.impl.*;
  *
  */
 public class JooqFacesRestoreViewPhaseListener implements PhaseListener {
-	private final static long serialVersionUID = 1L;
-
+	private static final long serialVersionUID = 1L;
+	private static final Logger LOGGER = LogManager.getLogger(JooqFacesRestoreViewPhaseListener.class);
+	
 	public void afterPhase(PhaseEvent event) {
 	}
 
@@ -29,7 +31,7 @@ public class JooqFacesRestoreViewPhaseListener implements PhaseListener {
 	 * @return the parameter value of the jooq faces driver
 	 */
 	public String getDriver(ServletContext servletContext) {
-		return (String) servletContext.getInitParameter(EJooqApplicationScope.JOOQ_FACES_DRIVER.get());
+		return servletContext.getInitParameter(EJooqApplicationScope.JOOQ_FACES_DRIVER.get());
 	}
 
 	/**
@@ -40,7 +42,7 @@ public class JooqFacesRestoreViewPhaseListener implements PhaseListener {
 	 * @return the parameter value of the jooq faces url
 	 */
 	public String getUrl(ServletContext servletContext) {
-		return (String) servletContext.getInitParameter(EJooqApplicationScope.JOOQ_FACES_URL.get());
+		return servletContext.getInitParameter(EJooqApplicationScope.JOOQ_FACES_URL.get());
 	}
 
 	/**
@@ -52,13 +54,17 @@ public class JooqFacesRestoreViewPhaseListener implements PhaseListener {
 	 */
 	public static final SQLDialect findDialect(String dialectName) {
 		if (dialectName == null) {
+			LOGGER.error("Sql dialect name is null");
 			return null;
 		} else {
 			for (SQLDialect dialect : SQLDialect.values()) {
+				LOGGER.trace("Sql dialect comparing: dialectName={}, loopDialect={}", dialectName, dialect);
 				if (dialectName.equalsIgnoreCase(dialect.name())) {
+					LOGGER.debug("Sql dialect found: dialectName={}, foundDialect={}", dialectName, dialect);
 					return dialect;
 				}
 			}
+			LOGGER.error("Sql dialect not found: dialectName={}", dialectName);
 			return null;
 		}
 	}
@@ -71,7 +77,7 @@ public class JooqFacesRestoreViewPhaseListener implements PhaseListener {
 	 * @return the dialect or null
 	 */
 	public SQLDialect getSqlDialect(ServletContext servletContext) {
-		String dialectName = (String) servletContext.getInitParameter(EJooqApplicationScope.JOOQ_FACES_SQLDIALECT.get());
+		String dialectName = servletContext.getInitParameter(EJooqApplicationScope.JOOQ_FACES_SQLDIALECT.get());
 		return findDialect(dialectName);
 	}
 
@@ -101,10 +107,13 @@ public class JooqFacesRestoreViewPhaseListener implements PhaseListener {
 			}
 			Class.forName(driver);
 			Connection connection = DriverManager.getConnection(url);
+			DSLContext dslContext = DSL.using(connection, sqlDialect);
 			FacesContext.getCurrentInstance().getExternalContext().getApplicationMap()
-					.put(EJooqApplicationScope.JOOQ_FACES_DSLCONTEXT.get(), DSL.using(connection, sqlDialect));
+					.put(EJooqApplicationScope.JOOQ_FACES_DSLCONTEXT.get(), dslContext);
+			LOGGER.debug("Created new jooq connection and put into facescontext");
+			LOGGER.trace("newConnection={}", dslContext);
 		} catch (ClassNotFoundException | IOException | SQLException e) {
-			e.printStackTrace();
+			LOGGER.error("Error creating jooq connection", e);
 		}
 	}
 

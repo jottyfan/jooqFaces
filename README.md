@@ -65,7 +65,7 @@ In your web.xml, register the database driver for example on a postgresql databa
 </context-param>
 <context-param>
 	<param-name>jooqFacesUrl</param-name>
-	<param-value>jdbc:postgresql://myhost:myport/mydatabase?user=myuser&password=mypassword&ssl=true</param-value>
+	<param-value>jdbc:postgresql://myhost:myport/mydatabase?user=myuser&amp;password=mypassword&amp;ssl=true</param-value>
 </context-param>
 
 <context-param>

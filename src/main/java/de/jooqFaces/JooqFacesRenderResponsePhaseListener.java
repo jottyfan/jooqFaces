@@ -6,6 +6,7 @@ import java.util.*;
 import javax.faces.context.*;
 import javax.faces.event.*;
 
+import org.apache.logging.log4j.*;
 import org.jooq.*;
 import org.jooq.exception.*;
 
@@ -15,8 +16,10 @@ import org.jooq.exception.*;
  *
  */
 public class JooqFacesRenderResponsePhaseListener implements PhaseListener {
-	private final static long serialVersionUID = 1L;
-
+	
+	private static final long serialVersionUID = 1L;
+	private static final Logger LOGGER = LogManager.getLogger(JooqFacesRenderResponsePhaseListener.class);
+	
 	/**
 	 * close connection
 	 */
@@ -26,10 +29,9 @@ public class JooqFacesRenderResponsePhaseListener implements PhaseListener {
 			DSLContext dslContext = (DSLContext) applMap.get(EJooqApplicationScope.JOOQ_FACES_DSLCONTEXT.get());
 			dslContext.configuration().connectionProvider().acquire().close();
 			dslContext.close();
-		} catch (DataAccessException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
+			LOGGER.debug("Closed jooq connection in render response");
+		} catch (DataAccessException | SQLException e) {
+			LOGGER.error("Error closing jooq connection in render response", e);
 		}
 	}
 
