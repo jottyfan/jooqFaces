@@ -74,7 +74,7 @@ public class JooqFacesContext extends FacesContext {
 
 	@Override
 	public boolean getResponseComplete() {
-		
+
 		return facesContext.getResponseComplete();
 	}
 
@@ -105,18 +105,7 @@ public class JooqFacesContext extends FacesContext {
 
 	@Override
 	public void responseComplete() {
-		
-		/*
-		 * TODO: Apparently this method is called twice when using faces-redirect. 
-		 * Should we ignore this? 
-		 * Should the render response and response complete methods remove the context from the faces map?
-		 * 
-		 * 	2018-05-10 19:06:57.555 [http-nio-8080-exec-29] [de.jooqFaces.JooqFacesRestoreViewPhaseListener:findDialect] [DEBUG] Sql dialect found: dialectName=POSTGRES_9_5, foundDialect=POSTGRES_9_5
-		 *	2018-05-10 19:06:57.563 [http-nio-8080-exec-29] [de.jooqFaces.JooqFacesRestoreViewPhaseListener:beforePhase] [DEBUG] Created new jooq connection and put into facescontext
-		 *	2018-05-10 19:06:57.580 [http-nio-8080-exec-29] [de.jooqFaces.JooqFacesContext:responseComplete] [DEBUG] Closed jooq connection in response complete
-		 *	2018-05-10 19:06:57.580 [http-nio-8080-exec-29] [de.jooqFaces.JooqFacesContext:responseComplete] [DEBUG] Closed jooq connection in response complete
-		 */
-		
+
 		try {
 			ExternalContext externalContext = facesContext.getExternalContext();
 			if (externalContext == null) {
