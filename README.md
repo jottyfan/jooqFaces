@@ -23,7 +23,7 @@ Then you can add a dependency on the dependencies tag:
 		<dependency>
 			<groupId>de.jooqFaces</groupId>
 			<artifactId>jooqFaces</artifactId>
-			<version>0.0.6-SNAPSHOT</version>
+			<version>0.1.0-SNAPSHOT</version>
 		</dependency>
 ````
 ## gradle
@@ -38,7 +38,7 @@ repositories {
 Then you can add a depencency:
 ````java
 dependencies {
-    compile group: 'de.jooqFaces', name: 'jooqFaces', version: '0.0.6-SNAPSHOT'
+    compile group: 'de.jooqFaces', name: 'jooqFaces', version: '0.1.0-SNAPSHOT'
 }
 ````
 
