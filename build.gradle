@@ -2,7 +2,7 @@ apply plugin: 'java'
 apply plugin: 'maven-publish'
 apply plugin: 'eclipse'
 
-version = '0.0.9-SNAPSHOT'
+version = '0.1.0-SNAPSHOT'
 group = 'de.jooqFaces'
 
 repositories {
@@ -14,7 +14,7 @@ dependencies {
   testCompile "org.mockito:mockito-core:2.15.0"
   compile "javax.servlet:javax.servlet-api:3.1.0"
   compile "org.apache.myfaces.core:myfaces-api:2.2.12"
-  compile "org.jooq:jooq:3.10.4"
+  compile "org.jooq:jooq:3.10.6"
   
   // log4j2 2.11.0 resulted in runtime problems
   compile "org.apache.logging.log4j:log4j-core:2.10.0"
